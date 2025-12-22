@@ -1,0 +1,39 @@
+# sbt
+sbt/
+
+# Build artifacts
+/target/
+/project/target/
+
+# IDE
+.idea/
+.vscode/
+*.iml
+*.ipr
+*.iws
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Log and temp
+*.log
+/tmp/
+*.tmp
+*~
+
+# Prolog temp
+*.qlf
+*.po
+*.xp
+*.wic
+*.pl.swp
+
+# Env
+.env
+*.env
+secrets.conf
+
+# JAR/WAR if built
+/*.jar
+/*.war
