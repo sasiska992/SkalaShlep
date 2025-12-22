@@ -7,7 +7,6 @@ class TicTacToeServlet extends ScalatraServlet {
 
   implicit val jsonFormats: DefaultFormats.type = DefaultFormats
 
-  // Game state stored in memory (for simplicity in this demo)
   var gameState = Map[String, Any](
     "board" -> Array.fill(3)(Array.fill(3)("")),
     "currentPlayer" -> "X",
@@ -17,11 +16,9 @@ class TicTacToeServlet extends ScalatraServlet {
 
   get("/") {
     contentType = "text/html"
-    // For now, serve a static file from resources
     scala.io.Source.fromInputStream(this.getClass().getClassLoader().getResourceAsStream("index.html")).mkString
   }
 
-  // Serve static files
   get("/css/*") {
     val resourcePath = "css/" + request.getPathInfo.substring(5)
     contentType = "text/css"
@@ -64,9 +61,7 @@ class TicTacToeServlet extends ScalatraServlet {
         "gameOver" -> gameOver
       )
 
-      // If the move was made by human and it's now O's turn (bot's turn) and game is not over
       if (!gameOver && gameState("currentPlayer") == "O" && params.get("isBotMove").isEmpty) {
-        // Make a bot move
         makeBotMove()
       }
     }
@@ -77,21 +72,19 @@ class TicTacToeServlet extends ScalatraServlet {
   def makeBotMove(): Unit = {
     val board = gameState("board").asInstanceOf[Array[Array[String]]]
 
-    // Prepare Prolog query to determine bot move
     val prologQuery = createPrologQuery(board)
 
-    // Execute the Prolog program to get the best move
     val botMove = getBestMoveFromProlog(prologQuery)
 
     if (botMove != (-1, -1)) {
       val (row, col) = botMove
-      board(row)(col) = "O"  // Bot is always 'O'
+      board(row)(col) = "O"
 
       val won = checkWin(board, "O")
       val gameOver = won || isBoardFull(board)
 
       gameState += (
-        "currentPlayer" -> "X",  // Switch back to human
+        "currentPlayer" -> "X",
         "winner" -> (if (won) "O" else gameState("winner")),
         "gameOver" -> gameOver
       )
@@ -99,7 +92,6 @@ class TicTacToeServlet extends ScalatraServlet {
   }
 
   def createPrologQuery(board: Array[Array[String]]): String = {
-    // Convert board to Prolog representation
     val boardStr = board.map(row => "[" + row.map(cell =>
       if (cell == "") "e"
       else if (cell == "X") "x"
@@ -110,7 +102,6 @@ class TicTacToeServlet extends ScalatraServlet {
   }
 
   def getBestMoveFromProlog(boardStr: String): (Int, Int) = {
-    // Create a temporary Prolog file with the query
     val prologFile = "/tmp/ttt_query.pl"
     val query = s"""
       ${scala.io.Source.fromInputStream(this.getClass().getClassLoader().getResourceAsStream("tictactoe.pl")).mkString}
@@ -125,15 +116,13 @@ class TicTacToeServlet extends ScalatraServlet {
     Files.write(Paths.get(prologFile), query.getBytes, StandardOpenOption.CREATE, StandardOpenOption.WRITE, StandardOpenOption.TRUNCATE_EXISTING)
 
     try {
-      // Execute SWI-Prolog with our query
       val result = s"swipl ${prologFile}" !!
       val coords = result.trim.split(",").map(_.trim.toInt)
       if (coords.length == 2) (coords(0), coords(1))
       else (-1, -1)
     } catch {
-      case _: Exception => (-1, -1)  // Default error case
+      case _: Exception => (-1, -1)
     } finally {
-      // Clean up temporary file
       new java.io.File(prologFile).delete()
     }
   }
