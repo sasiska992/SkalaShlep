@@ -1,0 +1,11 @@
+services:
+  tic-tac-toe:
+    build: .
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./src:/app/src
+      - ./build.sbt:/app/build.sbt
+    environment:
+      - SBT_OPTS=-Xmx1G -Xms512M  # Limit memory usage to prevent overloading
+    command: sbt run
