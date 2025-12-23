@@ -1,0 +1,114 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f0f0;
+    margin: 0;
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+.container {
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 30px;
+    text-align: center;
+    max-width: 500px;
+    width: 100%;
+}
+
+h1 {
+    color: #333;
+    margin-bottom: 20px;
+}
+
+.game-info {
+    margin-bottom: 20px;
+}
+
+#current-player {
+    font-size: 1.2em;
+    font-weight: bold;
+    color: #555;
+}
+
+#game-status {
+    font-size: 1.1em;
+    font-weight: bold;
+    margin-top: 10px;
+    height: 24px;
+}
+
+.game-board {
+    display: grid;
+    grid-template-columns: repeat(3, 100px);
+    grid-gap: 5px;
+    margin: 20px auto;
+    justify-content: center;
+}
+
+.cell {
+    width: 100px;
+    height: 100px;
+    background-color: #fff;
+    border: 2px solid #333;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 2.5em;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.cell:hover {
+    background-color: #f5f5f5;
+}
+
+.cell.x {
+    color: #ff4444;
+}
+
+.cell.o {
+    color: #4444ff;
+}
+
+.controls {
+    margin-top: 20px;
+}
+
+button {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1em;
+    margin: 0 5px;
+    transition: background-color 0.3s;
+}
+
+button:hover {
+    background-color: #45a049;
+}
+
+#mode-toggle {
+    background-color: #2196F3;
+}
+
+#mode-toggle:hover {
+    background-color: #1976D2;
+}
+
+.bot-thoughts {
+    margin-top: 15px;
+    font-style: italic;
+    color: #666;
+}
+
+.winner-cell {
+    background-color: #aaffaa;
+}
